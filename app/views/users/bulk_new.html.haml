@@ -1,0 +1,17 @@
+%h1 Add a csv
+
+.flash-messages
+  - flash.each do |name, msg|
+    = msg
+
+= form_tag add_users_path, method: 'post' do
+
+  .grid
+    .col
+      = label_tag :csv_raw, "Paste the content here"
+      = text_area_tag :csv_raw
+    .col
+      = label_tag :csv_file, "Or upload a file here"
+      = file_field_tag :csv_file
+
+  = button_tag :submit

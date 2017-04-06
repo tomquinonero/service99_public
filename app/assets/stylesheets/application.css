@@ -13,3 +13,23 @@
  *= require_tree .
  *= require_self
  */
+
+.container{
+  width: 600px;
+  margin: 1em auto;
+  font-family: sans-serif;
+  font-size: 1.4em;
+}
+
+.grid{
+  overflow: auto;
+}
+.col{
+  width: 50%;
+  float: left;
+}
+
+.flash-messages{
+  font-size: 0.8em;
+  margin-bottom: 1.5em;
+}
