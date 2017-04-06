@@ -1,15 +1,19 @@
 class UsersController < ApplicationController
+  rescue_from Faraday::ConnectionFailed do
+    redirect_to add_users_path, alert: "The csv service seems to be down."
+  end
 
   def bulk_new
 
   end
 
   def index
-    data = User.all
+    data = User.all.order('count desc')
     @data = {}
     data.each do |user|
       @data[user.name] = user.count
     end
+
     render 'table_display'
   end
 
@@ -48,10 +52,8 @@ class UsersController < ApplicationController
           User.create(name: name, count: count)
         end
       end
-
     end
 
-    
   end
 
   def users_params
