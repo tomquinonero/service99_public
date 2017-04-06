@@ -29,6 +29,18 @@ class UsersController < ApplicationController
     else
       @data = body
     end
+
+    body.each do |name,count|
+      if User.find_by_name(name)
+        user = User.find_by_name(name)
+        count = user.count + count
+        user.count = count
+        user.save 
+      else
+        User.create(name: name, count: count)
+      end
+    end
+
   end
 
   def users_params
