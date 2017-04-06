@@ -4,7 +4,7 @@
   - flash.each do |name, msg|
     = msg
 
-= form_tag add_users_path, method: 'post' do
+= form_tag add_users_path, method: 'post', multipart: true do
 
   .grid
     .col
