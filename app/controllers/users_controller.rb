@@ -4,6 +4,15 @@ class UsersController < ApplicationController
 
   end
 
+  def index
+    data = User.all
+    @data = {}
+    data.each do |user|
+      @data[user.name] = user.count
+    end
+    render 'table_display'
+  end
+
   def add_users
     if !users_params[:csv_raw].blank?
       response = Faraday.post 'http://localhost:5000/csv_processing', { :data => users_params[:csv_raw] } 
@@ -28,19 +37,21 @@ class UsersController < ApplicationController
       redirect_to add_users_path, alert: body['error']
     else
       @data = body
-    end
 
-    body.each do |name,count|
-      if User.find_by_name(name)
-        user = User.find_by_name(name)
-        count = user.count + count
-        user.count = count
-        user.save 
-      else
-        User.create(name: name, count: count)
+      body.each do |name,count|
+        if User.find_by_name(name)
+          user = User.find_by_name(name)
+          count = user.count + count
+          user.count = count
+          user.save 
+        else
+          User.create(name: name, count: count)
+        end
       end
+
     end
 
+    
   end
 
   def users_params
