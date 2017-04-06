@@ -6,16 +6,30 @@ class UsersController < ApplicationController
 
   def add_users
     if !users_params[:csv_raw].blank?
-      puts 'raw'
+      response = Faraday.post 'http://localhost:5000/csv_processing', { :data => users_params[:csv_raw] } 
+
+      handle_api_call(response)
+
     elsif !users_params[:csv_file].blank?
       puts 'file'
     else
       redirect_to add_users_path, alert: "You have to specify a text or a file"
     end
 
+    render 'table_display'
   end
 
   private
+
+  def handle_api_call response
+    body = JSON.parse response.body
+
+    if body['error']
+      redirect_to add_users_path, alert: body['error']
+    else
+      @data = body
+    end
+  end
 
   def users_params
     params.permit(:csv_raw, :csv_file)

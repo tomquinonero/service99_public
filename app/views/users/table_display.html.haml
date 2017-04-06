@@ -1,0 +1,12 @@
+%h1 Results
+  
+%table
+  %tr
+    %th Name
+    %th Number of appearances
+    - @data.each do |name,count|
+      %tr
+        %td 
+          = name
+        %td 
+          = count
